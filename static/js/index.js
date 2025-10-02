@@ -16,7 +16,7 @@ exports.postAceInit = (hookName, context) => {
         "insertsize",
         true
       );
-      hs.val("dummy");
+      hs.val("6");
     }
   });
   $(".font_size").hover(() => {
