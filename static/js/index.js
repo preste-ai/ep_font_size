@@ -19,50 +19,58 @@ exports.postAceInit = (hookName, context) => {
       hs.val("6");
     }
   });
+
   $(".font_size").hover(() => {
     $(".submenu > .size-selection").attr("size", 6);
     $(".submenu > #font-size").attr("size", 6);
   });
+
   $(".font-size-icon").click(() => {
     $("#font-size").toggle();
   });
 };
 
 exports.aceAttribsToClasses = (hookName, context) => {
-  if (context.key.indexOf("font-size:") !== -1) {
-    const size = /(?:^| )font-size:([A-Za-z0-9]*)/.exec(context.key);
-    return [`font-size:${size[1]}`];
-  }
   if (context.key === "font-size") {
     return [`font-size:${context.value}`];
   }
+  return [];
 };
 
 exports.aceCreateDomLine = (hookName, context) => {
-  const cls = context.cls;
-  const [, sizesType] = /(?:^| )font-size:([A-Za-z0-9]*)/.exec(cls) || [];
-  if (sizesType == null) return [];
-  const tagIndex = shared.sizes.indexOf(sizesType);
-  if (tagIndex < 0) return [];
+  const classes = context.cls.split(" ");
+  const fontSizeClass = classes.find((cls) => cls.startsWith("font-size:"));
+  if (!fontSizeClass) return [];
+  const size = fontSizeClass.split(":")[1];
+  if (!shared.sizes.includes(size)) return [];
   return [
     {
       extraOpenTags: "",
       extraCloseTags: "",
-      cls,
+      cls: fontSizeClass,
     },
   ];
 };
 
 exports.aceInitialized = (hookName, context) => {
-  // Passing a level >= 0 will set a sizes on the selected lines, level < 0 will remove it
   context.editorInfo.ace_doInsertsizes = (level) => {
     const { rep, documentAttributeManager } = context;
     if (!(rep.selStart && rep.selEnd)) return;
     if (level >= 0 && shared.sizes[level] === undefined) return;
-    const newSize = ["font-size", level >= 0 ? shared.sizes[level] : ""];
-    documentAttributeManager.setAttributesOnRange(rep.selStart, rep.selEnd, [
-      newSize,
-    ]);
+
+    // Remove all existing font-size attributes before applying new one
+    shared.sizes.forEach((size) => {
+      documentAttributeManager.setAttributesOnRange(rep.selStart, rep.selEnd, [
+        ["font-size", ""],
+      ]);
+    });
+
+    if (level >= 0) {
+      const newSize = ["font-size", shared.sizes[level]];
+      documentAttributeManager.setAttributesOnRange(rep.selStart, rep.selEnd, [
+        newSize,
+      ]);
+    }
   };
 };
 
