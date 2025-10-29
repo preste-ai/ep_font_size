@@ -1,28 +1,34 @@
 .ace-line span {
-  font-size: 18.62px;
+  /* font-size: 18.62px; */
+  font-size: 14pt;
 }
 
 [data-font-size="14"],
 .font-size\:14 {
-  font-size: 18.62px !important;
+  /* font-size: 18.62px !important; */
+  font-size: 14pt !important;
 }
 
 [data-font-size="16"],
 .font-size\:16 {
-  font-size: 21.28px !important;
+  /* font-size: 21.28px !important; */
+  font-size: 16pt !important;
 }
 
 [data-font-size="20"],
 .font-size\:20 {
-  font-size: 26.6px !important;
+  /* font-size: 26.6px !important; */
+  font-size: 20pt !important;
 }
 
 [data-font-size="24"],
 .font-size\:24 {
-  font-size: 31.92px !important;
+  /* font-size: 31.92px !important; */
+  font-size: 24pt !important;
 }
 
 [data-font-size="30"],
 .font-size\:30 {
-  font-size: 39.9px !important;
+  /* font-size: 39.9px !important; */
+  font-size: 30pt !important;
 }
